@@ -71,7 +71,7 @@ namespace Nez
 				Deadzone = deadzone;
 			}
 
-			public override float Value => Mathf.SignThreshold(Input.GamePads[GamepadIndex].GetLeftStick(Deadzone).X, Deadzone);
+			public override float Value => Input.GamePads[GamepadIndex].GetLeftStick(Deadzone).X;
 		}
 
 
@@ -97,8 +97,7 @@ namespace Nez
 				get
 				{
 					var multiplier = InvertResult ? -1 : 1;
-					return multiplier *
-					       Mathf.SignThreshold(Input.GamePads[GamepadIndex].GetLeftStick(Deadzone).Y, Deadzone);
+					return multiplier * Input.GamePads[GamepadIndex].GetLeftStick(Deadzone).Y;
 				}
 			}
 		}
@@ -116,7 +115,7 @@ namespace Nez
 				Deadzone = deadzone;
 			}
 
-			public override float Value => Mathf.SignThreshold(Input.GamePads[GamepadIndex].GetRightStick(Deadzone).X, Deadzone);
+			public override float Value => Input.GamePads[GamepadIndex].GetRightStick(Deadzone).X;
 		}
 
 
@@ -132,7 +131,7 @@ namespace Nez
 				Deadzone = deadzone;
 			}
 
-			public override float Value => Mathf.SignThreshold(Input.GamePads[GamepadIndex].GetRightStick(Deadzone).Y, Deadzone);
+			public override float Value => Input.GamePads[GamepadIndex].GetRightStick(Deadzone).Y;
 		}
 
 
