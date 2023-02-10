@@ -113,6 +113,11 @@ namespace Nez.Tiled
 		public TmxMap TiledMap;
 
 		/// <summary>
+		/// Whether the entity should be moved to the other extremity of the map when if goes through the edge.
+		/// </summary>
+		public bool WrapAroundEdges = false;
+
+		/// <summary>
 		/// temporary storage for all the tiles that intersect the bounds being checked
 		/// </summary>
 		List<TmxLayerTile> _collidingTiles = new List<TmxLayerTile>();
@@ -149,6 +154,8 @@ namespace Nez.Tiled
 			boxCollider.UnregisterColliderWithPhysicsSystem();
 			boxCollider.Entity.Transform.Position += motion;
 			boxCollider.RegisterColliderWithPhysicsSystem();
+
+			WrapAroundIfNeeded(boxCollider.Entity);
 		}
 
 		public void TestCollisions(ref Vector2 motion, Rectangle boxColliderBounds, CollisionState collisionState)
@@ -505,6 +512,34 @@ namespace Nez.Tiled
 			RectangleExt.ExpandSide(ref bounds, side, motion);
 
 			return bounds;
+		}
+
+		/// <summary>
+		/// Moves the entity to the other extremity of the map if needed.
+		/// Only applicable if <see cref="WrapAroundEdges"/> is true
+		/// </summary>
+		/// <param name="entity">The entity to be moved.</param>
+		void WrapAroundIfNeeded(Entity entity)
+		{
+			var width = TiledMap.Width * TiledMap.TileWidth;
+			var height = TiledMap.Height * TiledMap.TileHeight;
+			if (entity.Transform.Position.X > width)
+			{
+				entity.Transform.Position *= Vector2.UnitY;
+			}
+			else if (entity.Transform.Position.X < 0)
+			{
+				entity.Transform.Position = new Vector2(width, entity.Transform.Position.Y);
+			}
+
+			if (entity.Transform.Position.Y > height)
+			{
+				entity.Transform.Position *= Vector2.UnitX;
+			}
+			else if (entity.Transform.Position.Y < 0)
+			{
+				entity.Transform.Position = new Vector2(entity.Transform.Position.X, height);
+			}
 		}
 
 
